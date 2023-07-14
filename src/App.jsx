@@ -1,7 +1,7 @@
 import "./App.css";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVJaEnRwkFqfSh6QHlLquJG9oGDAVCMH8",
@@ -16,21 +16,50 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const signUp = async (email, password) => {
-  createUserWithEmailAndPassword(auth, email, password)
+const signUp = (email, password) => {
+  return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
-      console.log("Sign Up Successful!");
+      return userCredential;
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.error(errorCode + errorMessage);
+      console.error(errorCode, errorMessage);
+      throw error; // Rethrow the error to be caught by the caller
     });
 };
 
-//UseCase
-//signUp("example0@email.com", "password@123456");
+// signUp Usage Example
+// signUp("example0@email.com", "password@123456")
+//   .then((userCredential) => {
+//     console.log(userCredential); // Access the resolved userCredential here
+//   })
+//   .catch((error) => {
+//     console.error(error); // Handle any errors here
+//   });
+
+const getCollectionData = (collectionPath) => {
+  const queryCol = collection(db, collectionPath);
+
+  return getDocs(queryCol)
+    .then((querySnapshot) => {
+      const queryItemList = querySnapshot.docs.map((doc) => doc.data());
+      return queryItemList;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error; // Rethrow the error to be caught by the caller
+    });
+};
+
+// getCollectionData Usage Example
+// getCollectionData("collection1")
+//   .then((queryItemList) => {
+//     console.log(queryItemList); // Access the resolved queryItemList here
+//   })
+//   .catch((error) => {
+//     console.error(error); // Handle any errors here
+//   });
 
 function App() {
   return (
