@@ -1,5 +1,7 @@
 import "./App.css";
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVJaEnRwkFqfSh6QHlLquJG9oGDAVCMH8",
@@ -7,10 +9,12 @@ const firebaseConfig = {
   projectId: "trd-fb-00",
   storageBucket: "trd-fb-00.appspot.com",
   messagingSenderId: "562347353539",
-  appId: "1:562347353539:web:0be76a5d8ceca51a3c0976"
+  appId: "1:562347353539:web:0be76a5d8ceca51a3c0976",
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 function App() {
   return (
