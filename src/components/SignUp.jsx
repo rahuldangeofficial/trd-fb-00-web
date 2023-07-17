@@ -7,19 +7,42 @@ import "./LoaderOverlay.css";
 const SignUp = ({ setUserCredentials, setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const emailValidationRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordValidationRegex =
+    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
+  const passwordValidationMessage =
+    "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
 
   const handleSignIn = () => {
     setCurrentPage("signIn");
   };
 
   const handleSignUp = () => {
+    if (!emailValidationRegex.test(email)) {
+      setError("Invalid email address.");
+      return;
+    }
+
+    if (!passwordValidationRegex.test(password)) {
+      setError(passwordValidationMessage);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
+
     signUp(email, password)
       .then((userCredential) => {
         setUserCredentials(userCredential);
-        setCurrentPage("home");
+        setCurrentPage("signIn");
         setLoading(false);
       })
       .catch((error) => {
@@ -59,6 +82,12 @@ const SignUp = ({ setUserCredentials, setCurrentPage }) => {
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
       />
       <button onClick={handleSignIn} disabled={loading}>
         Sign In
