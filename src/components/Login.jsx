@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { signIn, signUp } from "../fireAdapter";
+import Error from "./Error";
 
 const Login = ({ setUserCredentials, setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   const handleSignIn = () => {
     signIn(email, password)
@@ -13,7 +15,7 @@ const Login = ({ setUserCredentials, setCurrentPage }) => {
         setCurrentPage("home");
       })
       .catch((error) => {
-        console.error("Sign in error:", error);
+        setError(error.message);
       });
   };
 
@@ -24,7 +26,7 @@ const Login = ({ setUserCredentials, setCurrentPage }) => {
         setCurrentPage("home");
       })
       .catch((error) => {
-        console.error("Sign up error:", error);
+        setError(error.message);
       });
   };
 
@@ -49,6 +51,7 @@ const Login = ({ setUserCredentials, setCurrentPage }) => {
       <button onClick={handleSignIn}>Sign In</button>
       <button onClick={handleSignUp}>Sign Up</button>
       <button onClick={handleForgotPassword}>Forgot Password</button>
+      {error && <Error message={error} />}
     </div>
   );
 };

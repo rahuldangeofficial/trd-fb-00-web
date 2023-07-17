@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { applyPasswordResetCode } from "../fireAdapter";
+import Error from "./Error";
 
 const ResetPassword = ({ setCurrentPage }) => {
   const [resetCode, setResetCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [error, setError] = useState(null);
 
   const handlePasswordReset = () => {
     applyPasswordResetCode(resetCode, newPassword)
@@ -13,7 +15,7 @@ const ResetPassword = ({ setCurrentPage }) => {
         setCurrentPage("login");
       })
       .catch((error) => {
-        console.error("Password reset error:", error);
+        setError(error.message);
       });
   };
 
@@ -32,6 +34,7 @@ const ResetPassword = ({ setCurrentPage }) => {
         onChange={(e) => setNewPassword(e.target.value)}
       />
       <button onClick={handlePasswordReset}>Reset Password</button>
+      {error && <Error message={error} />}
     </div>
   );
 };

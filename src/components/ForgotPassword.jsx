@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { forgotPassword } from "../fireAdapter";
+import Error from "./Error";
 
 const ForgotPassword = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState(null);
 
   const handleForgotPassword = () => {
     forgotPassword(email)
@@ -12,7 +14,7 @@ const ForgotPassword = ({ setCurrentPage }) => {
         setCurrentPage("resetPassword");
       })
       .catch((error) => {
-        console.error("Forgot password error:", error);
+        setError(error.message);
       });
   };
 
@@ -25,6 +27,7 @@ const ForgotPassword = ({ setCurrentPage }) => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <button onClick={handleForgotPassword}>Send Password Reset Code</button>
+      {error && <Error message={error} />}
     </div>
   );
 };
