@@ -1,68 +1,40 @@
 import "./App.css";
 import { useState } from "react";
-import { auth, signIn, signUp, signOut } from "./fireAdapter";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import LoginPage from "./components/LoginPage";
+import HomePage from "./components/HomePage";
+import ForgotPasswordPage from "./components/ForgotPasswordPage";
+import ResetPasswordPage from "./components/ResetPasswordPage";
 
 function App() {
   const [userCredentials, setUserCredentials] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSignIn = () => {
-    signIn(email, password)
-      .then((userCredential) => {
-        setUserCredentials(userCredential);
-      })
-      .catch((error) => {
-        console.error("Sign in error:", error);
-      });
-  };
-
-  const handleSignUp = () => {
-    signUp(email, password)
-      .then((userCredential) => {
-        setUserCredentials(userCredential);
-      })
-      .catch((error) => {
-        console.error("Sign up error:", error);
-      });
-  };
-
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        setUserCredentials(null);
-      })
-      .catch((error) => {
-        console.error("Sign out error:", error);
-      });
-  };
+  const [currentPage, setCurrentPage] = useState("login");
+  // "login", "home", "forgotPassword", "resetPassword"
 
   return (
     <>
-      <h1>trd-fb-00-web</h1>
-      {userCredentials ? (
-        <div>
-          <p>Welcome, {userCredentials.user.email}!</p>
-          <button onClick={handleSignOut}>Sign Out</button>
-        </div>
-      ) : (
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button onClick={handleSignIn}>Sign In</button>
-          <button onClick={handleSignUp}>Sign Up</button>
-        </div>
+      <Header />
+      {currentPage === "login" && (
+        <LoginPage
+          setUserCredentials={setUserCredentials}
+          setCurrentPage={setCurrentPage}
+        />
       )}
+      {currentPage === "home" && (
+        <HomePage
+          userCredentials={userCredentials}
+          setUserCredentials={setUserCredentials}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+      {currentPage === "forgotPassword" && (
+        <ForgotPasswordPage setCurrentPage={setCurrentPage} />
+      )}
+      {currentPage === "resetPassword" && (
+        <ResetPasswordPage setCurrentPage={setCurrentPage} />
+      )}
+      <Footer />
     </>
   );
 }

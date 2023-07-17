@@ -5,6 +5,9 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  sendPasswordResetEmail,
+  updatePassword,
+  applyActionCode,
 } from "firebase/auth";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
@@ -53,6 +56,32 @@ const signIn = async (email, password) => {
   }
 };
 
+const forgotPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    // The password reset email has been sent successfully.
+    // The user can now check their email to reset their password.
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error(errorCode, errorMessage);
+    throw error; // Rethrow the error to be caught by the caller
+  }
+};
+
+const applyPasswordResetCode = async (code, newPassword) => {
+  try {
+    await applyActionCode(auth, code);
+    await updatePassword(auth.currentUser, newPassword);
+    // Password reset successful.
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error(errorCode, errorMessage);
+    throw error; // Rethrow the error to be caught by the caller
+  }
+};
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in
@@ -78,34 +107,14 @@ const getCollectionData = async (collectionPath) => {
   }
 };
 
-export { getCollectionData, signIn, signUp, signOut, app, db, auth };
-
-{
-  //Use case
-  // getCollectionData Usage Example
-  // getCollectionData("collection1")
-  //   .then((queryItemList) => {
-  //     console.log(queryItemList); // Access the resolved queryItemList here
-  //   })
-  //   .catch((error) => {
-  //     console.error(error); // Handle any errors here
-  //   });
-  // signIn Usage Example
-  // signIn("example@email.com", "password123")
-  //   .then((userCredential) => {
-  //     console.log("User signed in:", userCredential.user);
-  //     // Continue with further processing or UI updates
-  //   })
-  //   .catch((error) => {
-  //     console.error("Sign in error:", error);
-  //     // Handle sign in error
-  //   });
-  // signUp Usage Example
-  // signUp("example0@email.com", "password@123456")
-  //   .then((userCredential) => {
-  //     console.log(userCredential); // Access the resolved userCredential here
-  //   })
-  //   .catch((error) => {
-  //     console.error(error); // Handle any errors here
-  //   });
-}
+export {
+  getCollectionData,
+  signIn,
+  signUp,
+  signOut,
+  forgotPassword,
+  applyPasswordResetCode,
+  app,
+  db,
+  auth,
+};
