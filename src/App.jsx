@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -7,11 +7,26 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
+import { auth } from "./fireAdapter";
 
 function App() {
   const [userCredentials, setUserCredentials] = useState(null);
-  const [currentPage, setCurrentPage] = useState("signIn");
+  const [currentPage, setCurrentPage] = useState("");
   // "signIn", "signUp", "home", "forgotPassword", "resetPassword"
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserCredentials({ user });
+        setCurrentPage("home");
+      } else {
+        setUserCredentials(null);
+        setCurrentPage("signIn");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <>

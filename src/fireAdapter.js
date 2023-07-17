@@ -3,11 +3,12 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   signOut,
   sendPasswordResetEmail,
   updatePassword,
   applyActionCode,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
@@ -23,6 +24,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    console.log("Authentication persistence configured successfully.");
+  })
+  .catch((error) => {
+    console.error("Error configuring authentication persistence:", error);
+  });
 
 const signUp = async (email, password) => {
   try {
@@ -81,18 +90,6 @@ const applyPasswordResetCode = async (code, newPassword) => {
     throw error; // Rethrow the error to be caught by the caller
   }
 };
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in
-    console.log("User signed in:", user);
-    // Continue with further processing or UI updates
-  } else {
-    // User is signed out
-    console.log("User signed out");
-    // Perform actions specific to signed-out user
-  }
-});
 
 const getCollectionData = async (collectionPath) => {
   const queryCol = collection(db, collectionPath);
