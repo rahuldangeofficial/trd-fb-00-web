@@ -1,21 +1,25 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { applyPasswordResetCode } from "../fireAdapter";
+import { signUp } from "../fireAdapter";
 import Error from "./Error";
 import "./LoaderOverlay.css";
 
-const ResetPassword = ({ setCurrentPage }) => {
-  const [resetCode, setResetCode] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+const SignUp = ({ setUserCredentials, setCurrentPage }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handlePasswordReset = () => {
+  const handleSignIn = () => {
+    setCurrentPage("signIn");
+  };
+
+  const handleSignUp = () => {
     setLoading(true);
-    applyPasswordResetCode(resetCode, newPassword)
-      .then(() => {
-        console.log("Password reset successful.");
-        setCurrentPage("signIn");
+    signUp(email, password)
+      .then((userCredential) => {
+        setUserCredentials(userCredential);
+        setCurrentPage("home");
         setLoading(false);
       })
       .catch((error) => {
@@ -45,27 +49,31 @@ const ResetPassword = ({ setCurrentPage }) => {
         </div>
       )}
       <input
-        type="text"
-        placeholder="Enter Password Reset Code or Link"
-        value={resetCode}
-        onChange={(e) => setResetCode(e.target.value)}
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
-        placeholder="Enter New Password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handlePasswordReset} disabled={loading}>
-        Reset Password
+      <button onClick={handleSignIn} disabled={loading}>
+        Sign In
+      </button>
+      <button onClick={handleSignUp} disabled={loading}>
+        Sign Up
       </button>
       {error && <Error message={error} />}
     </div>
   );
 };
 
-ResetPassword.propTypes = {
+SignUp.propTypes = {
+  setUserCredentials: PropTypes.func,
   setCurrentPage: PropTypes.func,
 };
 
-export default ResetPassword;
+export default SignUp;

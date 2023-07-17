@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { signIn, signUp } from "../fireAdapter";
+import { signIn } from "../fireAdapter";
 import Error from "./Error";
 import "./LoaderOverlay.css";
 
-const Login = ({ setUserCredentials, setCurrentPage }) => {
+const SignIn = ({ setUserCredentials, setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -25,17 +25,7 @@ const Login = ({ setUserCredentials, setCurrentPage }) => {
   };
 
   const handleSignUp = () => {
-    setLoading(true);
-    signUp(email, password)
-      .then((userCredential) => {
-        setUserCredentials(userCredential);
-        setCurrentPage("home");
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    setCurrentPage("signUp");
   };
 
   const handleForgotPassword = () => {
@@ -86,9 +76,9 @@ const Login = ({ setUserCredentials, setCurrentPage }) => {
   );
 };
 
-Login.propTypes = {
+SignIn.propTypes = {
   setUserCredentials: PropTypes.func,
   setCurrentPage: PropTypes.func,
 };
 
-export default Login;
+export default SignIn;

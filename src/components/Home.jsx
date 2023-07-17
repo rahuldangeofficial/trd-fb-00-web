@@ -13,7 +13,7 @@ const Home = ({ userCredentials, setUserCredentials, setCurrentPage }) => {
     signOut(auth)
       .then(() => {
         setUserCredentials(null);
-        setCurrentPage("login");
+        setCurrentPage("signIn");
         setLoading(false);
       })
       .catch((error) => {
