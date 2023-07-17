@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { signIn, signUp } from "../fireAdapter";
 
-const LoginPage = ({ setUserCredentials, setCurrentPage }) => {
+const Login = ({ setUserCredentials, setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -53,9 +53,9 @@ const LoginPage = ({ setUserCredentials, setCurrentPage }) => {
   );
 };
 
-LoginPage.propTypes = {
+Login.propTypes = {
   setUserCredentials: PropTypes.func,
   setCurrentPage: PropTypes.func,
 };
 
-export default LoginPage;
+export default Login;

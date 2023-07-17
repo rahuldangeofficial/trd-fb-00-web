@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { applyPasswordResetCode } from "../fireAdapter";
 
-const ResetPasswordPage = ({ setCurrentPage }) => {
+const ResetPassword = ({ setCurrentPage }) => {
   const [resetCode, setResetCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -36,8 +36,8 @@ const ResetPasswordPage = ({ setCurrentPage }) => {
   );
 };
 
-ResetPasswordPage.propTypes = {
+ResetPassword.propTypes = {
   setCurrentPage: PropTypes.func,
 };
 
-export default ResetPasswordPage;
+export default ResetPassword;

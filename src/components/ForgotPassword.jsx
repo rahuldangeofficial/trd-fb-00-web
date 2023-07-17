@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { forgotPassword } from "../fireAdapter";
 
-const ForgotPasswordPage = ({ setCurrentPage }) => {
+const ForgotPassword = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
 
   const handleForgotPassword = () => {
@@ -29,8 +29,8 @@ const ForgotPasswordPage = ({ setCurrentPage }) => {
   );
 };
 
-ForgotPasswordPage.propTypes = {
+ForgotPassword.propTypes = {
   setCurrentPage: PropTypes.func,
 };
 
-export default ForgotPasswordPage;
+export default ForgotPassword;

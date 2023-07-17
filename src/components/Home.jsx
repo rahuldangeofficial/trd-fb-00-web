@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { auth, signOut } from "../fireAdapter";
 
-const HomePage = ({ userCredentials, setUserCredentials, setCurrentPage }) => {
+const Home = ({ userCredentials, setUserCredentials, setCurrentPage }) => {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -21,10 +21,10 @@ const HomePage = ({ userCredentials, setUserCredentials, setCurrentPage }) => {
   );
 };
 
-HomePage.propTypes = {
+Home.propTypes = {
   userCredentials: PropTypes.object,
   setUserCredentials: PropTypes.func,
   setCurrentPage: PropTypes.func,
 };
 
-export default HomePage;
+export default Home;

@@ -2,10 +2,10 @@ import "./App.css";
 import { useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import LoginPage from "./components/LoginPage";
-import HomePage from "./components/HomePage";
-import ForgotPasswordPage from "./components/ForgotPasswordPage";
-import ResetPasswordPage from "./components/ResetPasswordPage";
+import Login from "./components/Login";
+import Home from "./components/Home";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   const [userCredentials, setUserCredentials] = useState(null);
@@ -16,23 +16,23 @@ function App() {
     <>
       <Header />
       {currentPage === "login" && (
-        <LoginPage
+        <Login
           setUserCredentials={setUserCredentials}
           setCurrentPage={setCurrentPage}
         />
       )}
       {currentPage === "home" && (
-        <HomePage
+        <Home
           userCredentials={userCredentials}
           setUserCredentials={setUserCredentials}
           setCurrentPage={setCurrentPage}
         />
       )}
       {currentPage === "forgotPassword" && (
-        <ForgotPasswordPage setCurrentPage={setCurrentPage} />
+        <ForgotPassword setCurrentPage={setCurrentPage} />
       )}
       {currentPage === "resetPassword" && (
-        <ResetPasswordPage setCurrentPage={setCurrentPage} />
+        <ResetPassword setCurrentPage={setCurrentPage} />
       )}
       <Footer />
     </>
