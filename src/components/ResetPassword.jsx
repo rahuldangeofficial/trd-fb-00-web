@@ -10,6 +10,7 @@ const ResetPassword = ({ setCurrentPage }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const passwordValidationRegex =
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
@@ -30,7 +31,7 @@ const ResetPassword = ({ setCurrentPage }) => {
 
     applyPasswordResetCode(resetCode, newPassword)
       .then(() => {
-        console.log("Password reset successful.");
+        setSuccessMessage("Password reset successful. You can now sign in with your new password.");
         setCurrentPage("signIn");
         setLoading(false);
       })
@@ -81,6 +82,7 @@ const ResetPassword = ({ setCurrentPage }) => {
       <button onClick={handlePasswordReset} disabled={loading}>
         Reset Password
       </button>
+      {successMessage && <p>{successMessage}</p>}
       {error && <Error message={error} />}
     </div>
   );

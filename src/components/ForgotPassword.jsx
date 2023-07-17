@@ -8,12 +8,13 @@ const ForgotPassword = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleForgotPassword = () => {
     setLoading(true);
     forgotPassword(email)
       .then(() => {
-        console.log("Password reset email sent successfully.");
+        setSuccessMessage("Password reset email sent successfully.");
         setCurrentPage("resetPassword");
         setLoading(false);
       })
@@ -52,6 +53,7 @@ const ForgotPassword = ({ setCurrentPage }) => {
       <button onClick={handleForgotPassword} disabled={loading}>
         Send Password Reset Code
       </button>
+      {successMessage && <p>{successMessage}</p>}
       {error && <Error message={error} />}
     </div>
   );
