@@ -5,8 +5,6 @@ import {
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
-  updatePassword,
-  applyActionCode,
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
@@ -78,19 +76,6 @@ const forgotPassword = async (email) => {
   }
 };
 
-const applyPasswordResetCode = async (code, newPassword) => {
-  try {
-    await applyActionCode(auth, code);
-    await updatePassword(auth.currentUser, newPassword);
-    // Password reset successful.
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error(errorCode, errorMessage);
-    throw error; // Rethrow the error to be caught by the caller
-  }
-};
-
 const getCollectionData = async (collectionPath) => {
   const queryCol = collection(db, collectionPath);
 
@@ -110,7 +95,6 @@ export {
   signUp,
   signOut,
   forgotPassword,
-  applyPasswordResetCode,
   app,
   db,
   auth,

@@ -15,7 +15,7 @@ const ForgotPassword = ({ setCurrentPage }) => {
     forgotPassword(email)
       .then(() => {
         setSuccessMessage("Password reset email sent successfully.");
-        setCurrentPage("resetPassword");
+        setCurrentPage("signIn");
         setLoading(false);
       })
       .catch((error) => {
@@ -51,7 +51,7 @@ const ForgotPassword = ({ setCurrentPage }) => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <button onClick={handleForgotPassword} disabled={loading}>
-        Send Password Reset Code
+        Send Password Reset Link
       </button>
       {successMessage && <p>{successMessage}</p>}
       {error && <Error message={error} />}
