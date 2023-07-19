@@ -1,7 +1,5 @@
-import "./App.css";
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Home from "./components/Home";
 import ForgotPassword from "./components/ForgotPassword";
 import SignUp from "./components/SignUp";
@@ -52,7 +50,6 @@ function App() {
       {currentPage === "forgotPassword" && (
         <ForgotPassword setCurrentPage={setCurrentPage} />
       )}
-      <Footer />
     </>
   );
 }
