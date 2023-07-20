@@ -25,31 +25,54 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  return (
-    <>
-      <Header />
-      {currentPage === "signIn" && (
-        <SignIn
-          setUserCredentials={setUserCredentials}
-          setCurrentPage={setCurrentPage}
-        />
-      )}
-      {currentPage === "signUp" && (
-        <SignUp
-          setUserCredentials={setUserCredentials}
-          setCurrentPage={setCurrentPage}
-        />
-      )}
-      {currentPage === "home" && (
+  let activeComponent = <></>;
+
+  switch (currentPage) {
+    case "home":
+      activeComponent = (
         <Home
           userCredentials={userCredentials}
           setUserCredentials={setUserCredentials}
           setCurrentPage={setCurrentPage}
         />
-      )}
-      {currentPage === "forgotPassword" && (
-        <ForgotPassword setCurrentPage={setCurrentPage} />
-      )}
+      );
+
+      break;
+
+    case "signIn":
+      activeComponent = (
+        <SignIn
+          setUserCredentials={setUserCredentials}
+          setCurrentPage={setCurrentPage}
+        />
+      );
+
+      break;
+
+    case "signUp":
+      activeComponent = (
+        <SignUp
+          setUserCredentials={setUserCredentials}
+          setCurrentPage={setCurrentPage}
+        />
+      );
+
+      break;
+
+    case "forgotPassword":
+      activeComponent = <ForgotPassword setCurrentPage={setCurrentPage} />;
+
+      break;
+
+    default:
+      activeComponent = <></>;
+      break;
+  }
+
+  return (
+    <>
+      <Header />
+      {activeComponent}
     </>
   );
 }
