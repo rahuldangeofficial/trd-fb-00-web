@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { signIn } from "../fireAdapter";
+import { signIn, signInWithGoogle } from "../fireAdapter";
 import Error from "./Error";
 import {
   Button,
@@ -40,6 +40,21 @@ const SignIn = ({ setUserCredentials, setCurrentPage }) => {
     setLoading(true);
 
     signIn(email, password)
+      .then((userCredential) => {
+        setUserCredentials(userCredential);
+        setCurrentPage("home");
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
+  };
+
+  const handleGoogleSignIn = () => {
+    setLoading(true);
+
+    signInWithGoogle()
       .then((userCredential) => {
         setUserCredentials(userCredential);
         setCurrentPage("home");
@@ -118,6 +133,20 @@ const SignIn = ({ setUserCredentials, setCurrentPage }) => {
             </Button>
           ) : (
             <Button onClick={handleSignIn}>Log In</Button>
+          )}
+        </Row>
+        <Row
+          css={{ m: "$0", p: "$5" }}
+          justify="center"
+          align="center"
+          style={{ border: "0px solid red" }}
+        >
+          {loading ? (
+            <Button disabled>
+              <Loading color="currentColor" size="sm" />
+            </Button>
+          ) : (
+            <Button onClick={handleGoogleSignIn}>Log In With Google</Button>
           )}
         </Row>
         <Row

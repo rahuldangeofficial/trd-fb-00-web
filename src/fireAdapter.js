@@ -7,6 +7,8 @@ import {
   sendPasswordResetEmail,
   setPersistence,
   browserLocalPersistence,
+  GoogleAuthProvider,
+  signInWithRedirect,
 } from "firebase/auth";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
@@ -30,6 +32,20 @@ setPersistence(auth, browserLocalPersistence)
   .catch((error) => {
     console.error("Error configuring authentication persistence:", error);
   });
+
+const signInWithGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+
+  try {
+    const result = await signInWithRedirect(auth, provider);
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const userCredential = GoogleAuthProvider.credentialFromResult(result);
+    return userCredential;
+  } catch (error) {
+    console.error(error.code, error.message);
+    throw error;
+  }
+};
 
 const signUp = async (email, password) => {
   try {
@@ -98,4 +114,5 @@ export {
   app,
   db,
   auth,
+  signInWithGoogle,
 };
