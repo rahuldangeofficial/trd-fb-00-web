@@ -19,6 +19,7 @@ const SignIn = ({ setUserCredentials, setCurrentPage }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const emailValidationRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordValidationRegex =
@@ -52,17 +53,17 @@ const SignIn = ({ setUserCredentials, setCurrentPage }) => {
   };
 
   const handleGoogleSignIn = () => {
-    setLoading(true);
+    setGoogleLoading(true);
 
     signInWithGoogle()
       .then((userCredential) => {
         setUserCredentials(userCredential);
         setCurrentPage("home");
-        setLoading(false);
+        setGoogleLoading(false);
       })
       .catch((error) => {
         setError(error.message);
-        setLoading(false);
+        setGoogleLoading(false);
       });
   };
 
@@ -141,7 +142,7 @@ const SignIn = ({ setUserCredentials, setCurrentPage }) => {
           align="center"
           style={{ border: "0px solid red" }}
         >
-          {loading ? (
+          {googleLoading ? (
             <Button disabled>
               <Loading color="currentColor" size="sm" />
             </Button>
