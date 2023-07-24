@@ -10,7 +10,15 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
 } from "firebase/auth";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVJaEnRwkFqfSh6QHlLquJG9oGDAVCMH8",
@@ -97,8 +105,47 @@ const getCollectionData = async (collectionPath) => {
 
   try {
     const querySnapshot = await getDocs(queryCol);
-    const queryItemList = querySnapshot.docs.map((doc) => doc.data());
+    const queryItemList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     return queryItemList;
+  } catch (error) {
+    console.error(error);
+    throw error; // Rethrow the error to be caught by the caller
+  }
+};
+
+const setCollectionData = async (collectionPath, data) => {
+  const colRef = collection(db, collectionPath);
+
+  try {
+    await addDoc(colRef, data);
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw error; // Rethrow the error to be caught by the caller
+  }
+};
+
+const updateCollectionData = async (collectionPath, docId, newData) => {
+  const ref = doc(db, collectionPath, docId);
+
+  try {
+    await updateDoc(ref, newData);
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw error; // Rethrow the error to be caught by the caller
+  }
+};
+
+const deleteCollectionData = async (collectionPath, docId) => {
+  const ref = doc(db, collectionPath, docId);
+
+  try {
+    await deleteDoc(ref);
+    return true;
   } catch (error) {
     console.error(error);
     throw error; // Rethrow the error to be caught by the caller
@@ -107,6 +154,9 @@ const getCollectionData = async (collectionPath) => {
 
 export {
   getCollectionData,
+  setCollectionData,
+  updateCollectionData,
+  deleteCollectionData,
   signIn,
   signUp,
   signOut,
